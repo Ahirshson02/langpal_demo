@@ -16,7 +16,7 @@ class UserNotifier extends ChangeNotifier{
       name: "Sophia",
       id: "ai_001",
       language: "Spanish",
-      flag_path: "images/flags/spain.jpg",
+      flag_path: "images/flags/spain_flag.jpg",
     );
 
   final List<String> convo = [

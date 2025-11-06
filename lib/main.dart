@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:langpal_prototype/conversations/conversations.dart';
 import 'package:langpal_prototype/navigator.dart';
 import 'package:langpal_prototype/profile/profile.dart';
+import 'package:langpal_prototype/types/ai_partner.dart';
 import 'package:provider/provider.dart';
+import 'types/user.dart';
 import "types/user_notifier.dart";
 
 
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LangPal',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -50,8 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
     "Home": GlobalKey<NavigatorState>(),
     "Profile": GlobalKey<NavigatorState>(),
   };
+  
   int _index = 1;
-
   void _selectTab(String tabItem, int index) {
     if(tabItem == _currentPage){
       _navKeys[tabItem]?.currentState?.popUntil((route) => route.isFirst);
@@ -67,7 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
- 
+    User user = context.read<UserNotifier>().user!;
+    //print(user.conversations!.keys.toList()[0].name ?? "List is null" );
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -81,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 7, 172, 190), //Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Color.fromARGB(255, 7, 172, 190),
         foregroundColor: Color.fromARGB(255, 42, 42, 42),
       ),
       
@@ -91,12 +95,23 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ClipOval(
-                  child: Image.asset('images/logo1.png', height: 50),
-              ),
-              const Text(
-                'You have pushed the button this many times:',
-              ),
+              SizedBox(height: 10),
+              Text(
+                "Your Conversations",
+                style: GoogleFonts.nunito(
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                ),
+              Expanded(
+                child: ConversationsPage(
+                  aiList: user.conversations?.keys.toList() as List<AiPartner>
+                  ))
+              
             ],
           ),
         ),
@@ -131,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Color.fromARGB(255, 255, 248, 233),
       ),
       backgroundColor: Color.fromARGB(255, 255, 248, 233),
+      
     
     );
   }

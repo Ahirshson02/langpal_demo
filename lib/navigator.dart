@@ -1,18 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:langpal_prototype/conversations/chat_page.dart';
 import 'package:langpal_prototype/conversations/conversations.dart';
 import 'package:langpal_prototype/main.dart';
 import 'package:langpal_prototype/profile/profile.dart';
+
+import 'types/ai_partner.dart';
 
 class CustomNav extends StatelessWidget{
   final GlobalKey<NavigatorState> navKey;
   final String tab;
   const CustomNav({super.key, required this.navKey, required this.tab});
   
+  
+
   @override
   Widget build(BuildContext context) {
+        final ai = AiPartner(
+      name: "Sophia",
+      id: "ai_001",
+      language: "Spanish",
+      flag_path: "images/flags/spain_flag.jpg",
+    );
+    final ai2 = AiPartner(
+      name: "Akira",
+      id: "ai_002",
+      language: "Japanese",
+      flag_path: "images/flags/japan_flag.png",
+    );
+
+    final ai3 = AiPartner(
+      name: "Johann",
+      id: "ai_003",
+      language: "Germany",
+      flag_path: "images/flags/german_flag.jpg",
+    );
+    
+    List<AiPartner> aiList = [ai, ai2,ai3];
+
     Widget child = MyHomePage();
     if(tab == "Conversations")
-      child = ConversationsPage();
+      child = ConversationsPage(aiList: aiList,);
     else if(tab == "Home")
       child = MyHomePage();
     else if(tab == "Profile")

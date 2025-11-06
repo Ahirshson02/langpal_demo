@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 
 import '../types/ai_partner.dart';
 import '../types/user.dart';
+import 'chat_page.dart';
 
 class ConversationsPage extends StatefulWidget {
-  const ConversationsPage({super.key});
+  final List<AiPartner> aiList;
+  const ConversationsPage({super.key, required this.aiList});
 
   @override
   State<ConversationsPage> createState() => _ConversationState();
@@ -21,117 +23,94 @@ class _ConversationState extends State<ConversationsPage> {
     final height = size.height;
 
     //load data from user state
-    User user = context.watch<UserNotifier>().user!;
-    final ai2 = AiPartner(
-      name: "Akira",
-      id: "ai_002",
-      language: "Japanese",
-      flag_path: "images/flags/japan.png",
-    );
-
-    final ai3 = AiPartner(
-      name: "Johann",
-      id: "ai_003",
-      language: "Germany",
-      flag_path: "images/flags/germany.jpg",
-    );
 
     return Scaffold(
+      
       body: SingleChildScrollView(
-        child: Container(
-          width: width,
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.08,
-            vertical: height * 0.04,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Profile image
-              CircleAvatar(
-                radius: width * 0.18,
-                backgroundImage: const AssetImage('assets/profile_placeholder.png'),
-              ),
-              SizedBox(height: height * 0.03),
-
-              // Editable Name
-              GestureDetector(
-                onTap: () {
-                  // TODO: open name edit dialog
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      user.name,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    const SizedBox(width: 6),
-                    const Icon(Icons.edit, size: 18),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: height * 0.02),
-
-              // Joined Date
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          children: widget.aiList.map((item) {
+            if(widget.aiList.isEmpty){
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Joined:"),
-                  Text(user.createdAt.toString()),
-                ],
-              ),
-              SizedBox(height: height * 0.015),
-
-              // Time Learning
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Time Learning:"),
-                  Text("0 hrs"),
-                ],
-              ),
-              SizedBox(height: height * 0.015),
-
-              // Editable Languages
-              GestureDetector(
-                onTap: () {
-                  // TODO: open languages edit dialog
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Languages:"),
-                    Row(
-                      children: [
-                        Text(user.languages.toString()),
-                        const SizedBox(width: 6),
-                        const Icon(Icons.edit, size: 18),
-                      ],
+                  Image.asset(
+                    "images\logo_outline.png",
+                    width: size.width * 0.4,
+                    height: size.width * 0.4,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Looks like you haven't started learning Yet \nGo to Conversations to get started!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: size.width * 0.045,
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: height * 0.04),
-
-              // Settings Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: navigate to settings
-                  },
-                  icon: const Icon(Icons.settings),
-                  label: const Text("Settings"),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: height * 0.018),
+                  ),
+                ],
+              );
+            }
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: 8),
+              child: GestureDetector(
+                onTap: () {
+                  //debugPrint("Tapped on ${item.name}");
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChatPage(aiPartner: item),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                      image: AssetImage(item.flag_path) as ImageProvider,
+                      fit: BoxFit.fill, // fill the box
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.3), // dark overlay for text readability
+                        BlendMode.darken,
+                      ),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        item.name,
+                        style: const TextStyle(
+                          color:  Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        item.language,
+                        style: const TextStyle(
+                          color:  Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        )
+                     // Image(image: AssetImage(item.flag_path) as ImageProvider)
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            );
+          }).toList(),
         ),
       ),
       backgroundColor: Color.fromARGB(255, 255, 248, 233),
