@@ -1,16 +1,14 @@
 # langpal_prototype
 
-A new Flutter project.
+Application Submission for LangPal Intership position
 
-## Getting Started
+### Goal:
+My goal with this application was to take the LangPal color scheme into a simple app, where a user could converse with AIs, set up a profile,
+and see their recent conversations.
 
-This project is a starting point for a Flutter application.
+Some technical goals were to implement statemangement so that things such known languages, and saved AI partners were tied to the user, not
+just hardcoded into lists (there are hardcoded lists, but these would be replaced with offical AI partner data from a database or API)
 
-A few resources to get you started if this is your first Flutter project:
+Some goals I did not have time to meet were instead of the AI partner sending the same message right back, was to have it send it in the language of the partner (Spanish for Sophia, German for Johann, etc.), and have a tap and hold feature that would show it in English. As well as some overflow errors I did not solve.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Ultimately, I believe this application shows my familiarity with an important Flutter concept, state management.
